@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Example</title>
+        <style>
+        #target, #src > img {border: thin solid black; padding: 2px; margin:4px; height: 100px; width: 100px}
+        #target {height: 81px; width: 81px; text-align: center; display: table;}
+        #target > p {display: table-cell; vertical-align: middle;}
+        #target > img {margin: 1px; max-width: 600px; max-height: 400px;}
+        img.dragged {background-color: lightgrey;}
+        </style>
+    </head>
+    <body>
+        <div id="src">
+            <img draggable="true" id="banana" src="banana.jpg" alt="banana"/>
+            <img draggable="true" id="apple" src="red-apple.png" alt="apple"/>
+            <img draggable="true" id="pineapple" src="pineapple.jpg" alt="pineapple" />
+            <div id="target">
+                <canvas id="canvas" width="600" height="400"></canvas>
+            </div>
+        </div>
+        <script>
+            var src = document.getElementById("src");
+            var target = document.getElementById("target");
+            var msg = document.getElementById("msg");
+            var draggedID; 
+            target.ondragenter = handleDrag;
+            target.ondragover = handleDrag;
+
+            target.ondrop = function(e) {
+                var newElem = document.getElementById(draggedID).cloneNode(false);
+                newElem.style.position = "absolute";
+                newElem.style.left = e.pageX.toString();
+                newElem.style.top = e.pageY.toString();
+                var rect = document.getElementById(draggedID).getBoundingClientRect();
+                console.log("x:", e.pageX, "y:", e.pageY);
+                rect.
+                target.innerHTML = "";
+                target.appendChild(newElem);
+                e.preventDefault();
+            }
+            function handleDrag(e) {
+                e.preventDefault();
+            }
+            src.ondragstart = function(e) {
+                draggedID = e.target.id;
+                e.target.classList.add("dragged");
+            }
+            src.ondragend = function(e) {
+                var elems = document.querySelectorAll(".dragged");
+                for (var i = 0; i < elems.length; i++) {
+                    elems[i].classList.remove("dragged");
+                }
+            }
+        </script>
+    </body>
+</html>
