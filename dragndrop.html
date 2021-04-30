@@ -27,6 +27,7 @@
             target.ondragenter = handleDrag;
             target.ondragover = handleDrag;
 
+            var appleNum = 0, bananaNum = 0, pineappleNum = 0;
             var offsetX = 0, offsetY = 0;
             /*
                 Drag and Drop assignment work here;
@@ -40,13 +41,30 @@
                 // clone the draggable item
                 var newElem = document.getElementById(draggedID).cloneNode(false);    
 
+                
+
                 var rect = c.getBoundingClientRect();
+                var x = e.pageX - rect.left - offsetX;
+                var y = e.pageY - rect.top - offsetY;
                 //var rect = document.getElementById(draggedID).getBoundingClientRect();
-                console.log("x:", e.pageX - rect.left - offsetX, "y:", e.pageY - rect.top - offsetY);
+                console.log("x:", x, "y:", y);
 
                 // draw image on position of ondrop - the position of the canvas
-                ctx.drawImage(newElem, e.pageX - rect.left - offsetX, e.pageY - rect.top - offsetY, 100, 100);
-
+                ctx.drawImage(newElem, x, y, 100, 100);
+                ctx.font = "12px Arial";
+                if(draggedID === 'banana') { 
+                    ++bananaNum;
+                    ctx.fillText("Banana " + bananaNum.toString(), x+25, y+50)
+                }
+                if(draggedID === 'apple') { 
+                    ++appleNum;
+                    ctx.fillText("Apple " + appleNum.toString(), x+25, y+50)
+                }
+                if(draggedID === 'pineapple') { 
+                    ++pineappleNum;
+                    ctx.fillText("Pineapple " + pineappleNum.toString(), x+25, y+50)
+                }
+                
                 e.preventDefault();
             }
             function handleDrag(e) {
