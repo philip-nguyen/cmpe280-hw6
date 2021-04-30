@@ -27,6 +27,7 @@
             target.ondragenter = handleDrag;
             target.ondragover = handleDrag;
 
+            var offsetX = 0, offsetY = 0;
             /*
                 Drag and Drop assignment work here;
                 with three items that can be dragged onto and cloned onto the canvas
@@ -41,10 +42,10 @@
 
                 var rect = c.getBoundingClientRect();
                 //var rect = document.getElementById(draggedID).getBoundingClientRect();
-                console.log("x:", e.pageX - rect.left, "y:", e.pageY - rect.top);
+                console.log("x:", e.pageX - rect.left - offsetX, "y:", e.pageY - rect.top - offsetY);
 
                 // draw image on position of ondrop - the position of the canvas
-                ctx.drawImage(newElem, e.pageX - rect.left, e.pageY - rect.top, 100, 100);
+                ctx.drawImage(newElem, e.pageX - rect.left - offsetX, e.pageY - rect.top - offsetY, 100, 100);
 
                 e.preventDefault();
             }
@@ -53,6 +54,10 @@
             }
             src.ondragstart = function(e) {
                 draggedID = e.target.id;
+                // set the offset coordinates
+                var clickedElem = document.getElementById(draggedID).getBoundingClientRect();
+                offsetX = e.pageX - clickedElem.left;
+                offsetY = e.pageY - clickedElem.top;
                 e.target.classList.add("dragged");
             }
             src.ondragend = function(e) {
