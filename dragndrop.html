@@ -28,7 +28,10 @@
             target.ondragover = handleDrag;
 
             var appleNum = 0, bananaNum = 0, pineappleNum = 0;
+
+            // offset to account for position of mouse onClick/onDrag
             var offsetX = 0, offsetY = 0;
+
             /*
                 Drag and Drop assignment work here;
                 with three items that can be dragged onto and cloned onto the canvas
@@ -41,17 +44,18 @@
                 // clone the draggable item
                 var newElem = document.getElementById(draggedID).cloneNode(false);    
 
-                
-
+                // get canvas bounds
                 var rect = c.getBoundingClientRect();
                 var x = e.pageX - rect.left - offsetX;
                 var y = e.pageY - rect.top - offsetY;
-                //var rect = document.getElementById(draggedID).getBoundingClientRect();
+                
                 console.log("x:", x, "y:", y);
 
                 // draw image on position of ondrop - the position of the canvas
                 ctx.drawImage(newElem, x, y, 100, 100);
                 ctx.font = "12px Arial";
+
+                // draw text for dragged fruit and count
                 if(draggedID === 'banana') { 
                     ++bananaNum;
                     ctx.fillText("Banana " + bananaNum.toString(), x+25, y+50)
@@ -72,10 +76,12 @@
             }
             src.ondragstart = function(e) {
                 draggedID = e.target.id;
-                // set the offset coordinates
+
+                // set the offset coordinates for how far the click is from top left of image
                 var clickedElem = document.getElementById(draggedID).getBoundingClientRect();
                 offsetX = e.pageX - clickedElem.left;
                 offsetY = e.pageY - clickedElem.top;
+
                 e.target.classList.add("dragged");
             }
             src.ondragend = function(e) {
